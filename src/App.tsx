@@ -1,4 +1,4 @@
-import { createGlobalStyle, ThemeProvider } from "styled-components";
+import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 import Router from "./Router";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { lightTheme, theme } from "./theme";
@@ -67,6 +67,24 @@ a {
 }
 `;
 
+const ModeBtn = styled.button`
+    border: none;
+    position: absolute;
+    top: 5vh;
+    left: 370px;
+    right: 0;
+    margin: 0 auto;
+    font-size: 25px;
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    background-color: ${props => props.theme.textColor};
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
 function App() {
     const [mode, setMode] = useState<boolean>(true);
     const onClick = () => {
@@ -75,7 +93,7 @@ function App() {
     return (
         <>
             <ThemeProvider theme={mode ? theme : lightTheme}>
-                <button onClick={onClick}>Mode</button>
+                <ModeBtn onClick={onClick}>{mode ? "🌞" : "🌙"}</ModeBtn>
                 <GLobalStyle />
                 <Router mode={mode} />
                 <ReactQueryDevtools initialIsOpen={false} />
