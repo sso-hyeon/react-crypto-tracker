@@ -52,18 +52,11 @@ function Chart({ coinId, mode }: ChartProps) {
                             toolbar: { show: false },
                             background: "transparent"
                         },
-                        dataLabels: {
-                            enabled: false
-                        },
-                        grid: { show: true },
                         plotOptions: {
                             candlestick: {
                                 colors: {
                                     upward: "#ee5353",
                                     downward: "#2e86de"
-                                },
-                                wick: {
-                                    useFillColor: true
                                 }
                             }
                         },
@@ -71,14 +64,24 @@ function Chart({ coinId, mode }: ChartProps) {
                             show: false
                         },
                         xaxis: {
-                            axisBorder: { show: true },
-                            axisTicks: { show: false },
+                            type: "numeric",
+                            categories: data?.map(value =>
+                                value.time_open.substring(5, 10)
+                            ),
                             labels: {
-                                show: true
+                                show: true,
+                                hideOverlappingLabels: false,
+                                style: {
+                                    fontSize: "10px"
+                                }
                             },
-                            type: "datetime",
-                            categories: data?.map(value => value.time_close)
+                            axisBorder: {
+                                strokeWidth: 5
+                            }
                         }
+                        // xaxis: {
+                        //     type: "datetime",
+                        // }
                     }}
                 />
             )}

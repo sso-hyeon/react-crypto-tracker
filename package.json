@@ -54,5 +54,5 @@
         "@types/react-router-dom": "^5.3.3",
         "@types/styled-components": "^5.1.15"
     },
-    "homepage": "https://sso-hyeon.github.io/react-movie"
+    "homepage": "https://sso-hyeon.github.io/react-crypto-tracker"
 }
