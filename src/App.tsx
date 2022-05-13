@@ -1,5 +1,8 @@
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle, ThemeProvider } from "styled-components";
 import Router from "./Router";
+import { ReactQueryDevtools } from "react-query/devtools";
+import { lightTheme, theme } from "./theme";
+import { useState } from "react";
 
 const GLobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;700&display=swap');
@@ -65,10 +68,18 @@ a {
 `;
 
 function App() {
+    const [mode, setMode] = useState<boolean>(true);
+    const onClick = () => {
+        setMode(prev => !prev);
+    };
     return (
         <>
-            <GLobalStyle />
-            <Router />
+            <ThemeProvider theme={mode ? theme : lightTheme}>
+                <button onClick={onClick}>Mode</button>
+                <GLobalStyle />
+                <Router mode={mode} />
+                <ReactQueryDevtools initialIsOpen={false} />
+            </ThemeProvider>
         </>
     );
 }
