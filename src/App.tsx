@@ -1,7 +1,7 @@
-import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
+import { createGlobalStyle, ThemeProvider } from "styled-components";
 import Router from "./Router";
 import { ReactQueryDevtools } from "react-query/devtools";
-import { lightTheme, theme } from "./theme";
+import { lightTheme, darkTheme } from "./theme";
 import { useState } from "react";
 
 const GLobalStyle = createGlobalStyle`
@@ -67,36 +67,14 @@ a {
 }
 `;
 
-const ModeBtn = styled.button`
-    border: none;
-    position: absolute;
-    top: 5vh;
-    left: 370px;
-    right: 0;
-    margin: 0 auto;
-    font-size: 25px;
-    width: 50px;
-    height: 50px;
-    border-radius: 25px;
-    background-color: ${props => props.theme.textColor};
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 5;
-`;
-
 function App() {
-    const [mode, setMode] = useState<boolean>(true);
-    const onClick = () => {
-        setMode(prev => !prev);
-    };
+    const [isDark, setIsDark] = useState<boolean>(false);
+    const toggleDark = () => setIsDark(current => !current);
     return (
         <>
-            <ThemeProvider theme={mode ? theme : lightTheme}>
-                <ModeBtn onClick={onClick}>{mode ? "🌞" : "🌙"}</ModeBtn>
+            <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
                 <GLobalStyle />
-                <Router mode={mode} />
+                <Router isDark={isDark} toggleDark={toggleDark} />
                 <ReactQueryDevtools initialIsOpen={false} />
             </ThemeProvider>
         </>

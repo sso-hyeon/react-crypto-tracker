@@ -1,5 +1,4 @@
 import { useQuery } from "react-query";
-import { Helmet } from "react-helmet";
 import {
     Link,
     Route,
@@ -157,11 +156,11 @@ interface PriceData {
     };
 }
 
-interface Mode {
-    mode: boolean;
+interface ICoinProps {
+    isDark: boolean;
 }
 
-function Coin({ mode }: Mode) {
+function Coin({ isDark }: ICoinProps) {
     const { coinId } = useParams<Params>();
     const { state } = useLocation<RouteState>();
     const priceMatch = useRouteMatch("/:coinId/price");
@@ -181,9 +180,6 @@ function Coin({ mode }: Mode) {
     const loading = infoLoading || tickersLoading;
     return (
         <Container>
-            <Helmet>
-                <title>coin</title>
-            </Helmet>
             <Header>
                 <BackBtn>
                     <Link to={"/"}>👈</Link>
@@ -235,7 +231,7 @@ function Coin({ mode }: Mode) {
                             <Price coinId={coinId} />
                         </Route>
                         <Route path={`/:coinId/chart`}>
-                            <Chart coinId={coinId} mode={mode} />
+                            <Chart isDark={isDark} coinId={coinId} />
                         </Route>
                     </Switch>
                 </>

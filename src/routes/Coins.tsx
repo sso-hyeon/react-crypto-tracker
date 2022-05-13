@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -47,6 +48,11 @@ const Img = styled.img`
     margin-right: 10px;
 `;
 
+const Loader = styled.span`
+    text-align: center;
+    display: block;
+`;
+
 interface ICoin {
     id: string;
     name: string;
@@ -57,17 +63,20 @@ interface ICoin {
     type: string;
 }
 
-const Loader = styled.span`
-    text-align: center;
-    display: block;
-`;
+interface ICoinsProps {
+    toggleDark: () => void;
+}
 
-function Coins() {
+function Coins({ toggleDark }: ICoinsProps) {
     const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
     return (
         <Container>
+            <Helmet>
+                <title>coin</title>
+            </Helmet>
             <Header>
                 <Title>Coins</Title>
+                <button onClick={toggleDark}>Toggle Dark Mode</button>
             </Header>
             {isLoading ? (
                 <Loader>Loading...</Loader>
