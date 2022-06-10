@@ -7,8 +7,10 @@ import {
     useParams,
     useRouteMatch
 } from "react-router-dom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { fetchCoinInfo, fetchCoinTickers } from "../api";
+import { isDarkAtom } from "../atoms";
 import Chart from "./Chart";
 import Price from "./Price";
 
@@ -19,6 +21,7 @@ const Container = styled.div`
 `;
 
 const Header = styled.header`
+    width: 100%;
     height: 15vh;
     display: flex;
     justify-content: center;
@@ -93,6 +96,20 @@ const BackBtn = styled.button`
         display: block;
     }
 `;
+const ModeBtn = styled.button`
+    position: absolute;
+    right: 0;
+    padding: 0;
+    margin: auto 10px;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 20px;
+    background-color: ${props => props.theme.textColor};
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+`;
 
 interface Params {
     coinId: string;
@@ -156,15 +173,15 @@ interface PriceData {
     };
 }
 
-interface ICoinProps {
-    isDark: boolean;
-}
-
-function Coin({ isDark }: ICoinProps) {
+function Coin() {
     const { coinId } = useParams<Params>();
     const { state } = useLocation<RouteState>();
     const priceMatch = useRouteMatch("/:coinId/price");
     const chartMatch = useRouteMatch("/:coinId/chart");
+    const setDarkAtom = useSetRecoilState(isDarkAtom);
+    const toggleDarkAtom = () => setDarkAtom(prev => !prev);
+    const isDark = useRecoilValue(isDarkAtom);
+
     const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
         ["info", coinId],
         () => fetchCoinInfo(coinId)
@@ -186,6 +203,7 @@ function Coin({ isDark }: ICoinProps) {
                 </BackBtn>
                 <Title>
                     {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
+                    <ModeBtn onClick={toggleDarkAtom}>{isDark ? "🌞" : "🌙"}</ModeBtn>
                 </Title>
             </Header>
             {loading ? (
@@ -231,7 +249,7 @@ function Coin({ isDark }: ICoinProps) {
                             <Price coinId={coinId} />
                         </Route>
                         <Route path={`/:coinId/chart`}>
-                            <Chart isDark={isDark} coinId={coinId} />
+                            <Chart coinId={coinId} />
                         </Route>
                     </Switch>
                 </>
